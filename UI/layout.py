@@ -58,7 +58,7 @@ def game_layout(players, output):
 	]
 
 	compleate = [
-		[sg.Text(output['placeholder'], key='-TURN-INFO-')],
+		[sg.Text(output[''], key='-TURN-INFO-')],
 		[sg.Text(output['instructions'])],
 		board
 	]

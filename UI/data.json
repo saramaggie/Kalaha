@@ -26,13 +26,25 @@
 	"gameplay": {
 		"placeholder": "Placeholder for turn text",
 		"only_humans": "Player {}, it's your turn!",
-		"one_cpu": "value",
+		"one_cpu": "Player {} chose bowl {}, it's now your turn.",
 		"only_cpu": "value",
 		"instructions": "Choose a bowl by clicking on it.\nYour available bowls are dark blue."
 	},
 	"popout": {
-		"missing_answer": "Please make a selection for all options",
-		"early_exit": "You've closed the game early. BYEEEEE!",
-		"winner": "Congratulations Player {}, you won with a score of {}!"
+		"missing_answer": {
+			"output":"Please make a selection for all options.",
+			"window_title": "Missing option",
+			"button_text": "Okay, okay..."
+		},
+		"early_exit": {
+			"output":"You've closed the game early. BYEEEEE!",
+			"window_title": "Early exit",
+			"button_text": "Byeeeeeee"
+		},
+		"winner": {
+			"output":"Congratulations Player {}, you won with a score of {}!",
+			"window_title": "Game over",
+			"button_text": "Wohoooo!"
+		}
 	}
 }

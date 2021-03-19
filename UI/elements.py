@@ -163,34 +163,24 @@ def create_board(config):
 	return board
 
 
-def popup_notice(cause, champion=None):
+def popup_notice(cause, champ=None):
 	'''Creator of popup-window
 
 	Parameters
 	----------
 	cause : str
 	    What popup should be shown.
-	champion : None, optional
+	champ : None, optional
 	    If it's the popup announsing the winnner the object of that player will then be passed here.
 	'''
-	msg = load_data('popout', cause)
+	msgs = load_data('popout', cause)
 
-	if cause == 'missing_answer':
-		window_title = 'Missing option'
-		button_text = 'Okay, okay...'
-
-	elif cause == 'early_exit':
-		window_title = 'Early exit'
-		button_text = 'Byeeeeeee'
-
-	elif cause == 'winner':
-		window_title = 'Game over'
-		button_text = 'Wohoooo!'
-		msg = msg.format(champion.p_id, champion.score())
+	if cause == 'winner':
+		msgs['output'] = msgs['output'].format(champ.p_id, champ.score())
 
 	sg.Popup(
-		msg,
-		title=window_title,
-		custom_text=button_text,
+		msgs['output'],
+		title=msgs['window_title'],
+		custom_text=msgs['button_text'],
 		font=('Helvetica', 15)
 	)
