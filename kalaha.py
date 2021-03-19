@@ -1,22 +1,21 @@
 # Modules
 import PySimpleGUI as sg
-import random
 
 # Program Files
-import game
-from helpers import EarlyCloseException
+from helpers import EarlyCloseException, load_data
+import game_base as game
 import UI.elements as ui
-from classes import Player
 
 
 def settings(window):
-	''''''
+	'''
+	'''
 	while True:
 		event, values = window.read()
 
 		if event == sg.WIN_CLOSED:
 			# End game if window is closed
-			raise EarlyCloseException('settings', window)
+			raise EarlyCloseException('settings')
 
 		formated_answers = {}
 		for key in values:
@@ -32,27 +31,41 @@ def settings(window):
 	return formated_answers
 
 
-def setup_players(window, board, config):
-	'''docstring for start'''
+def play_game(window, board, players, gamer):
+	'''docstring for main'''
 
-	# Create the players
-	players = [
-		Player(0, config['p_1'], board[:7]),
-		Player(1, config['p_2'], board[7:])
-	]
+	gamer.disable_bowls(False)
+	turn_text = load_data('gameplay', 'turn')
 
-	[print(bowl.b_id) for bowl in players[0].board]
+	while gamer.has_balls():
+		if not gamer.human:
+			choice = gamer.cpu_round()
 
-	if config['start'] == 2:
-		starter = players[random.randrange(2)]
-	else:
-		starter = players[config['start']]
+		else:
+			window['-TURN-INFO-'].update(turn_text.format(gamer.p_id))
 
-	return players, starter
+			event, values = window.read()
+
+			print('event:', event)
+
+			if event == sg.WIN_CLOSED:
+				# End game if window is closed
+				raise EarlyCloseException('game')
+
+			choice = event[1]
+
+		last_bowl = game.move_balls(board, gamer, choice)
+
+		if last_bowl != gamer.home.b_id:
+			gamer = game.next_turn(players, gamer.index)
+
+	return players
 
 
 def main():
-	'''docstring for main'''
+	'''
+	Main function responsible for the overall program layout
+	'''
 
 	window = ui.create_window()
 
@@ -60,13 +73,13 @@ def main():
 		config = settings(window)
 		board = ui.create_board(config)
 
-		players, starter = setup_players(window, board, config)
+		players, starter = game.setup_players(board, config)
 		ui.switch_layout(window, players)
 
-		game.play(window, board, players, starter, True)
+		play_game(window, board, players, starter)
 
 	except EarlyCloseException:
-		ui.popup_notice('early_close')
+		ui.popup_notice('early_exit')
 
 	else:
 		champion = game.winner(players, config['start'])

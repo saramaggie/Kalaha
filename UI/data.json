@@ -26,11 +26,11 @@
 	"gameplay": {
 		"placeholder": "Placeholder for turn text",
 		"turn": "Player {}, it's your turn!",
-		"instructions": "Choose a bowl by clicking on it.\nYour available bowls are highlighted."
+		"instructions": "Choose a bowl by clicking on it.\nYour available bowls are dark blue."
 	},
 	"popout": {
 		"missing_answer": "Please make a selection for all options",
-		"early_close": "You've closed the game early. BYEEEEE!",
+		"early_exit": "You've closed the game early. BYEEEEE!",
 		"winner": "Congratulations Player {}, you won with a score of {}!"
 	}
 }
