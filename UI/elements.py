@@ -6,11 +6,22 @@ import UI.layout as layout
 
 
 class Bowl(sg.Button):
-	'''docstring for Bowl'''
-	def __init__(self, b_id, balls):
-		self.b_id = b_id
+	'''
+	A button object representing a bowl
 
-		if b_id == 6 or b_id == 13:
+	Attributes
+	----------
+	balls : int
+	    The ammount of balls set to start with.
+	index : int
+	    The position of the bowl relative to the board.
+	owner : int
+	    The index of the player that the bowl belongs to.
+	'''
+	def __init__(self, index, balls):
+		self.index = index
+
+		if index == 6 or index == 13:
 			self.balls = 0
 			f_size = 70
 			style = ('white', 'green')
@@ -19,14 +30,14 @@ class Bowl(sg.Button):
 			f_size = 50
 			style = None
 
-		if b_id < 7:
+		if index < 7:
 			self.owner = 0
 		else:
 			self.owner = 1
 
 		super().__init__(
 			button_text=f' {self.balls} ',
-			key=('bowl', self.b_id),
+			key=('bowl', self.index),
 			font=('Helvetica', f_size),
 			pad=(10, 10),
 			disabled=True,
@@ -34,12 +45,24 @@ class Bowl(sg.Button):
 		)
 
 	def is_home(self):
-		'''docstring for is_home'''
-		return self.b_id == 6 or self.b_id == 13
+		'''A bowl is a "home" if it has an index of 6 (player 1) or 13 (player 2)
+
+		Returns
+		-------
+		bool
+		    True if home, False otherwise.
+		'''
+		return self.index == 6 or self.index == 13
 
 	def pick_up(self):
-		'''docstring for pick_up'''
-		final = self.balls + self.b_id
+		'''Method for calculating what bowls will recive the picked bowl's balls
+
+		Returns
+		-------
+		int
+		    The number of bowls that will recive a ball, starting at the bowl after this one.
+		'''
+		final = self.balls + self.index
 
 		self.balls = 0
 		self.update_bowl(True)
@@ -47,12 +70,21 @@ class Bowl(sg.Button):
 		return final
 
 	def add_ball(self):
-		'''docstring for modify'''
+		'''
+		Adds a ball to bowl.
+		'''
+
 		self.balls += 1
 		self.update_bowl(False)
 
 	def update_bowl(self, state):
-		'''docstring for update_bowl'''
+		'''Update the text on the bowl as well as setting the state of the bowl.
+
+		Parameters
+		----------
+		state : bool
+		    If the bowl should be disabled or not
+		'''
 		if self.balls < 10:
 			text = f' {self.balls} '
 		else:
@@ -65,7 +97,13 @@ class Bowl(sg.Button):
 
 
 def create_window():
-	'''docstring for GameWindow'''
+	'''Creates the UI window
+
+	Returns
+	-------
+	Obj
+	    The created window object
+	'''
 	text = load_data('config')
 	base_ui = layout.base_layout(text)
 
@@ -78,13 +116,26 @@ def create_window():
 		resizable=True,
 		use_ttk_buttons=True
 	)
-	# window.Maximize()
+	window.Maximize()
 
 	return window
 
 
 def switch_layout(window, players):
-	'''docstring for switch_layout'''
+	'''Switch between the layout of the settings-UI to the layout of the game itself.
+
+	Parameters
+	----------
+	window : Object
+	    The UI window
+	players : List
+	    The players
+
+	Returns
+	-------
+	Object
+	    The updated window
+	'''
 	text = load_data('gameplay')
 	game_ui = layout.game_layout(players, text)
 	window.extend_layout(window['-BASE-'], [[game_ui]])
@@ -95,14 +146,33 @@ def switch_layout(window, players):
 
 
 def create_board(config):
-	'''docstring for create_board'''
-	board = [Bowl(b_id, config['balls']) for b_id in range(14)]
+	'''Create the bowls by adding them to a single list representing the gameboard.
+
+	Parameters
+	----------
+	config : int
+	    The number of balls to be added to the bowl
+
+	Returns
+	-------
+	list
+	    The created board
+	'''
+	board = [Bowl(index, config) for index in range(14)]
 
 	return board
 
 
 def popup_notice(cause, champion=None):
-	'''docstring for notify'''
+	'''Creator of popup-window
+
+	Parameters
+	----------
+	cause : str
+	    What popup should be shown.
+	champion : None, optional
+	    If it's the popup announsing the winnner the object of that player will then be passed here.
+	'''
 	msg = load_data('popout', cause)
 
 	if cause == 'missing_answer':

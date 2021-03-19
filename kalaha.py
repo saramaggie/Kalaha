@@ -8,13 +8,29 @@ import UI.elements as ui
 
 
 def settings(window):
+	'''Event loop collecting user input from the configuration menu
+
+	Parameters
+	----------
+	window : Object
+	    The user-interface window
+
+	Returns
+	-------
+	Dict
+	    Configurations for numer of balls, whether or not the players are human, and starting player formated for interpretation by following functions
+
+	Raises
+	------
+	EarlyCloseException
+	    If the user closes the window this exception is raised
 	'''
-	'''
+
 	while True:
 		event, values = window.read()
 
 		if event == sg.WIN_CLOSED:
-			# End game if window is closed
+			# End program if window is closed
 			raise EarlyCloseException('settings')
 
 		formated_answers = {}
@@ -32,10 +48,27 @@ def settings(window):
 
 
 def play_game(window, board, players, gamer):
-	'''docstring for main'''
+	'''The actual game. Here user is looped through the different stages of the game until one player is out of balls or the window is closed.
+
+	Parameters
+	----------
+	window : Object
+	    The user-interface window
+	board : list
+	    One list containing all the individual bowls
+	players : Object
+	    The players, a list containing the two player objects
+	gamer : list
+	    The starting player
+
+	Raises
+	------
+	EarlyCloseException
+	    If the user closes the window this exception is raised
+	'''
 
 	gamer.disable_bowls(False)
-	turn_text = load_data('gameplay', 'turn')
+	turn_text = load_data('gameplay', 'only_humans')
 
 	while gamer.has_balls():
 		if not gamer.human:
@@ -46,8 +79,6 @@ def play_game(window, board, players, gamer):
 
 			event, values = window.read()
 
-			print('event:', event)
-
 			if event == sg.WIN_CLOSED:
 				# End game if window is closed
 				raise EarlyCloseException('game')
@@ -56,10 +87,10 @@ def play_game(window, board, players, gamer):
 
 		last_bowl = game.move_balls(board, gamer, choice)
 
-		if last_bowl != gamer.home.b_id:
+		if last_bowl != gamer.home.index:
 			gamer = game.next_turn(players, gamer.index)
 
-	return players
+	return
 
 
 def main():
@@ -71,7 +102,7 @@ def main():
 
 	try:
 		config = settings(window)
-		board = ui.create_board(config)
+		board = ui.create_board(config['balls'])
 
 		players, starter = game.setup_players(board, config)
 		ui.switch_layout(window, players)

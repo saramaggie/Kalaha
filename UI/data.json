@@ -25,7 +25,9 @@
 	},
 	"gameplay": {
 		"placeholder": "Placeholder for turn text",
-		"turn": "Player {}, it's your turn!",
+		"only_humans": "Player {}, it's your turn!",
+		"one_cpu": "value",
+		"only_cpu": "value",
 		"instructions": "Choose a bowl by clicking on it.\nYour available bowls are dark blue."
 	},
 	"popout": {
