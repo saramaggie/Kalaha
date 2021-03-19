@@ -1,0 +1,36 @@
+{
+	"config": {
+		"instructions": "Configure your game by filling out the options below and then press \"play\"",
+		"balls": {
+			"id": "balls",
+			"text": "Balls per bowl:", 
+			"answers": [[3, 3], [4, 4], [5, 5], [6, 6]]
+		},
+		"human": "Are the players human?",
+		"p_1": {
+			"id": "p_1",
+			"text": "Player 1",
+			"answers": [["Yes",true], ["No",false]]
+		},
+		"p_2": {
+			"id": "p_2",
+			"text": "Player 2",
+			"answers": [["Yes",true], ["No",false]]
+		},
+		"start": {
+			"id": "start",
+			"text": "Starting player:",
+			"answers": [["Player 1", 0], ["Player 2", 1], ["Random", 2]]
+		}
+	},
+	"gameplay": {
+		"placeholder": "Placeholder for turn text",
+		"turn": "Player {}, it's your turn!",
+		"instructions": "Choose a bowl by clicking on it.\nYour available bowls are highlighted."
+	},
+	"popout": {
+		"missing_answer": "Please make a selection for all options",
+		"early_close": "You've closed the game early. BYEEEEE!",
+		"winner": "Congratulations Player {}, you won with a score of {}!"
+	}
+}
